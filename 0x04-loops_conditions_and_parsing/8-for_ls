@@ -3,11 +3,8 @@
 # The content of the current directory.
 # In a list format.
 # Where only the part of the name after the first dash is displayed.
-for file in *-*; 
-do
-	if [[ -f "$file" && ! "$file" =~ ^\..* ]];
-	    then
-        	name=${file#*-}
-        	echo "$name";
-    	fi
+for ls in *; do
+    if [[ -f "$ls" && ! "$ls" =~ ^\..* ]]; then
+        echo "$ls" | rev | cut -d '-' -f1 | rev
+    fi
 done
