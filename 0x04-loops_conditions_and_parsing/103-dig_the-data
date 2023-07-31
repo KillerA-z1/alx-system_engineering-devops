@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Grouping Visitors by IP and HTTP Status Code - AWK, CUT, SORT, UNIQ
+# OCCURENCE_NUMBER IP HTTP_CODE
+
+awk '{print $1, $9}' apache-access.log | sort | uniq -c | sort -n -r
