@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Backup the original NGINX configuration as a precaution
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
+
+# Add the redirection rule
+sudo sed -i '/server_name _;/a \    location /redirect_me {\n        return 301 https://github.com/KillerA-z1;\n    }' /etc/nginx/sites-available/default
+
+# Restart NGINX to apply the changes
+sudo service nginx restart
