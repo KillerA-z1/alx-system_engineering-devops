@@ -6,13 +6,19 @@
 # The SSH key specified by PATH_TO_SSH_KEY will be used for authentication.
 
 if [ $# -lt 4 ]; then
-	echo "Usage: $0 PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
+	echo "Usage: 0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
 	exit 1
 fi
 
 path_to_file=$1
 ip=$2
 username=$3
-ssh_key=$4
+PATH_TO_SSH_KEY=$4
 
 scp -o StrictHostKeyChecking=no -i "$ssh_key" "$path_to_file" "$username@$ip:~/"
+
+if [ $? -eq 0 ]; then
+  echo "FILE TRANSFER WAS SUCCESSFUL"
+else
+  echo "FILE TRANSFER FAILED"
+fi
