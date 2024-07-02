@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+#  A Script that configures a new Ubuntu machine to Perform 301 Moved Permanently
+
+# Update package list and install nginx
+sudo apt-get update
+sudo apt-get install -y nginx
+
+# Create the custom index.html with "Hello World!"
+echo "Hello World!" | sudo tee /var/www/html/index.html
 
 # Backup the original NGINX configuration as a precaution
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
