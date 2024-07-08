@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Install Nginx and create index.html
+sudo apt-get update && sudo apt-get install -y nginx
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Configure Nginx for redirection, custom 404 page, and custom HTTP header
+sudo tee /etc/nginx/sites-enabled/default > /dev/null <<EOF
+server {
+    listen 80 default_server;
+    server_name _;
+    rewrite ^/redirect_me https://github.com/KillerA-z1 permanent;
+    error_page 404 /404.html;
+    location = /404.html {
+        root /var/www/html;
+        internal;
+    }
+    location / {
+        root /var/www/html;
+        index index.html index.htm;
+    }
+    add_header X-Served-By \$HOSTNAME;
+}
+EOF
+
+# Create custom 404.html
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+
+# Test Nginx configuration and restart Nginx
+sudo nginx -t && sudo service nginx restart
