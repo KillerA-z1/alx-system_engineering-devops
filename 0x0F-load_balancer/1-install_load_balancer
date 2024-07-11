@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-#This Bash script installs and configures HAProxy on a Ubuntu server to load balance HTTP traffic 
-# between two web servers using a round-robin algorithm.
+#This Bash script installs and configures HAProxy on a Ubuntu server to load balance HTTP traffic.
 
 # Update and install HAProxy
 sudo apt-get update
@@ -26,9 +25,9 @@ defaults
     mode    http
     option  httplog
     option  dontlognull
-    timeout connect 5000ms
-    timeout client  50000ms
-    timeout server  50000ms
+    timeout connect 5000
+    timeout client  10000
+    timeout server  10000
 
 frontend http_front
     bind *:80
@@ -37,19 +36,18 @@ frontend http_front
 
 backend http_back
     balance roundrobin
-    server web-01 52.204.69.114:80 check
-    server web-02 54.158.80.235:80 check
+    server 240607-web-01 52.204.69.114:80 check
+    server 240607-web-02 54.158.80.235:80 check
 EOF
 
-
-STUDENT_ID="240607"
-sudo sed -i "s/\[STUDENT_ID\]/$STUDENT_ID/g" /etc/haproxy/haproxy.cfg
+# Ensure correct hostnames
+sudo hostnamectl set-hostname 240607-lb-01
 
 # Test the HAProxy configuration
 sudo haproxy -c -V -f /etc/haproxy/haproxy.cfg
 
-# Restart HAProxy to apply changes
-sudo systemctl restart haproxy
+# Enable HAProxy to be started by init script
+echo "ENABLED=1" | sudo tee /etc/default/haproxy
 
-# Display the status of HAProxy
-sudo systemctl status haproxy
+# Restart HAProxy to apply changes
+sudo service haproxy restart
