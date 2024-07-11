@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 # This script is used to debug and modify the NGINX configuration file.
-# It replaces the port number 8080 with 80 in the NGINX configuration file.
-# Then it reloads the NGINX service to apply the changes.
-# Finally, it stops the NGINX service.
 ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 nginx -s reload
 kill "$(pgrep 'nginx' | head -1)"
-
