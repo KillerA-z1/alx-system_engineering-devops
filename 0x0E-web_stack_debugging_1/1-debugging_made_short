@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # This script is used to debug and modify the NGINX configuration file.
 ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-nginx -s reload
+service nginx start
 kill "$(pgrep 'nginx' | head -1)"
