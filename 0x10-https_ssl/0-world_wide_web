@@ -4,13 +4,27 @@
 subdomains=("www" "lb-01" "web-01" "web-02")
 
 print_subdomain_info() {
-    dig "$1.$2" | awk -v sub="$1" '/ANSWER SECTION:/,/^$/ {if (NR==2) printf "The subdomain %s is a %s record and points to %s\n", sub, $4, $5}'
+    local subdomain=$1
+    local domain=$2
+    local dig_output
+
+    dig_output=$(dig "$subdomain.$domain" +short)
+    if [ -n "$dig_output" ]; then
+        record_type=$(dig "$subdomain.$domain" | awk '/ANSWER SECTION:/ {getline; print $4}')
+        echo "The subdomain $subdomain is a $record_type record and points to $dig_output"
+    fi
 }
 
 if [ $# -eq 1 ]; then
+    domain=$1
     for subdomain in "${subdomains[@]}"; do
-        print_subdomain_info "$subdomain" "$1"
+        print_subdomain_info "$subdomain" "$domain"
     done
 elif [ $# -eq 2 ]; then
-    print_subdomain_info "$2" "$1"
+    domain=$1
+    subdomain=$2
+    print_subdomain_info "$subdomain" "$domain"
+else
+    echo "Usage: $0 <domain> [subdomain]"
+    exit 1
 fi
