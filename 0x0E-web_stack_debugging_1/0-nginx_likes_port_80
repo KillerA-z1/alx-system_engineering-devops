@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# This script creates a symbolic link between the default Nginx configuration file
+# in the sites-available directory and the sites-enabled directory. It then restarts
+# the Nginx service to apply the changes.
+
+sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo service nginx restart
