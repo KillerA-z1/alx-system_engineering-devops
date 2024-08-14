@@ -26,6 +26,9 @@ def number_of_subscribers(subreddit):
         # Make a GET request to the Reddit API
         response = requests.get(url, headers=headers, allow_redirects=False)
 
+        # Check if the response is a redirect
+        if response.status_code in (301, 302):
+            return 0
         # Check if the request was successful (status code 200)
         if response.status_code == 200:
             # Parse the JSON response
