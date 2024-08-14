@@ -5,7 +5,7 @@
 import requests
 
 
-def print_top_ten_hot_posts(subreddit):
+def top_ten(subreddit):
     """
     Print the titles of the top 10 hot posts for a given subreddit.
 
